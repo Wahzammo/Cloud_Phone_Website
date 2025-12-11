@@ -1,0 +1,140 @@
+version: "3.8"
+
+services:
+  # === REDROID NODES (Android Containers) ===
+  
+  redroid-1:
+    image: redroid/redroid:12.0.0-latest
+    container_name: redroid-1
+    privileged: true
+    restart: unless-stopped
+    network_mode: bridge
+    ports:
+      - "5555:5555"
+    volumes:
+      - ./data/redroid-1:/data
+    devices:
+      - /dev/binderfs/binder:/dev/binder
+      - /dev/dri:/dev/dri
+    command:
+      - android.hardware.gralloc=minigbm
+      - scrcpy.max_fps=30
+
+  redroid-2:
+    image: redroid/redroid:12.0.0-latest
+    container_name: redroid-2
+    privileged: true
+    restart: unless-stopped
+    network_mode: bridge
+    ports:
+      - "5556:5555"
+    volumes:
+      - ./data/redroid-2:/data
+    devices:
+      - /dev/binderfs/binder:/dev/binder
+      - /dev/dri:/dev/dri
+    command:
+      - android.hardware.gralloc=minigbm
+      - scrcpy.max_fps=30
+
+  redroid-3:
+    image: redroid/redroid:12.0.0-latest
+    container_name: redroid-3
+    privileged: true
+    restart: unless-stopped
+    network_mode: bridge
+    ports:
+      - "5557:5555"
+    volumes:
+      - ./data/redroid-3:/data
+    devices:
+      - /dev/binderfs/binder:/dev/binder
+      - /dev/dri:/dev/dri
+    command:
+      - android.hardware.gralloc=minigbm
+      - scrcpy.max_fps=30
+
+  redroid-4:
+    image: redroid/redroid:12.0.0-latest
+    container_name: redroid-4
+    privileged: true
+    restart: unless-stopped
+    network_mode: bridge
+    ports:
+      - "5558:5555"
+    volumes:
+      - ./data/redroid-4:/data
+    devices:
+      - /dev/binderfs/binder:/dev/binder
+      - /dev/dri:/dev/dri
+    command:
+      - android.hardware.gralloc=minigbm
+      - scrcpy.max_fps=30
+
+  # === WS-SCRCPY BRIDGES (WebSocket to Browser) ===
+  
+  scrcpy-1:
+    image: scrcpy/ws-scrcpy
+    container_name: scrcpy-1
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redroid-1
+    environment:
+      - WS_SCRCPY_ADB_REMOTE=redroid-1:5555
+
+  scrcpy-2:
+    image: scrcpy/ws-scrcpy
+    container_name: scrcpy-2
+    restart: unless-stopped
+    ports:
+      - "8001:8000"
+    depends_on:
+      - redroid-2
+    environment:
+      - WS_SCRCPY_ADB_REMOTE=redroid-2:5555
+
+  scrcpy-3:
+    image: scrcpy/ws-scrcpy
+    container_name: scrcpy-3
+    restart: unless-stopped
+    ports:
+      - "8002:8000"
+    depends_on:
+      - redroid-3
+    environment:
+      - WS_SCRCPY_ADB_REMOTE=redroid-3:5555
+
+  scrcpy-4:
+    image: scrcpy/ws-scrcpy
+    container_name: scrcpy-4
+    restart: unless-stopped
+    ports:
+      - "8003:8000"
+    depends_on:
+      - redroid-4
+    environment:
+      - WS_SCRCPY_ADB_REMOTE=redroid-4:5555
+
+  # === FRONTEND (React Dashboard) ===
+  
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: north-metro-portal
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - scrcpy-1
+      - scrcpy-2
+      - scrcpy-3
+      - scrcpy-4
+
+volumes:
+  redroid-1-data:
+  redroid-2-data:
+  redroid-3-data:
+  redroid-4-data:

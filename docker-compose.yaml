@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  # --- Your Existing Redroid Node ---
+  redroid-1:
+    image: redroid/redroid:12.0.0-latest
+    container_name: redroid-1
+    privileged: true
+    restart: unless-stopped
+    network_mode: bridge
+    ports:
+      - "5555:5555" # ADB Port for Phone 1
+    volumes:
+      - ./data1:/data
+    devices:
+      - /dev/binderfs/binder:/dev/binder
+      - /dev/dri:/dev/dri
+    command:
+      - android.hardware.gralloc=minigbm
+      - scrcpy.max_fps=30 # Keep FPS low for the Ivy Bridge CPU!
+
+  # --- REPEAT service blocks for redroid-2, redroid-3, etc... --- 
+  # Just change the port mapping (5556:5555) and container_name.
+
+  # --- The Browser Bridge (ws-scrcpy) ---
+  scrcpy-web:
+    image: scrcpy/ws-scrcpy
+    container_name: scrcpy-bridge
+    restart: unless-stopped
+    ports:
+      - "8000:8000" # This is where the video stream lives
+    depends_on:
+      - redroid-1
+    environment:
+      - WS_SCRCPY_ADB_REMOTE=redroid-1:5555
+      # Add other phones here comma separated if the image supports it, 
+      # or run one bridge per phone if you want total isolation.
