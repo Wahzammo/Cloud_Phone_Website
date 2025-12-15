@@ -2,7 +2,8 @@ version: "3.8"
 
 services:
   # ---------------------------------------------------------------------------
-  # NODE 1: Tab S9 Ultra (Port 5555)
+  # NODE 1: Pixel 6a (Bluejay) - House 1 / Device A
+  # Native 6GB RAM Device - Perfect match for host constraints
   # ---------------------------------------------------------------------------
   redroid1:
     image: z220-farm:v1-magisk-core:latest
@@ -15,12 +16,10 @@ services:
       resources:
         limits:
           cpus: '2.0'
-          memory: 6G
+          memory: 6G # Native Pixel 6a Spec
     volumes:
       - ./data1:/data
-      # CORRECTED: Use binderfs for Ubuntu 22.04/Kernel 5.15+
       - /dev/binderfs:/dev/binderfs
-      # GPU Access
       - /dev/dri:/dev/dri
     command:
       # --- GPU CONFIG (RX 580) ---
@@ -31,16 +30,23 @@ services:
       # --- MAGISK FLAGS ---
       - ro.secure=0
       - ro.debuggable=1
-      # --- SPOOFING: Tab S9 Ultra (SM-X916B) ---
-      - ro.product.model=SM-X916B
-      - ro.product.brand=samsung
-      - ro.product.manufacturer=samsung
-      - ro.product.device=zeppelin
-      - ro.build.fingerprint=samsung/zeppelin/zeppelin:12/SP1A.210812.016/X916BXXU4BWL1:user/release-keys
+      # --- SPOOFING: Google Pixel 6a (Bluejay) ---
+      # Adjusted to Android 12 to match Redroid container OS version
+      - ro.product.brand=google
+      - ro.product.manufacturer=Google
+      - ro.product.model=Pixel 6a
+      - ro.product.device=bluejay
+      - ro.product.name=bluejay
+      - ro.product.board=bluejay
+      # Official Android 12 (June 2022) Fingerprint for consistency
+      - ro.build.fingerprint=google/bluejay/bluejay:12/SD2A.220601.003/8654604:user/release-keys
+      - ro.build.description=bluejay-user 12 SD2A.220601.003 8654604 release-keys
+      - ro.build.version.security_patch=2022-06-05
+      - ro.product.first_api_level=31
       - scrcpy.max_fps=30
 
   # ---------------------------------------------------------------------------
-  # NODE 2: Tab S9+ (Port 5556)
+  # NODE 2: Pixel 6a (Bluejay) - House 1 / Device B
   # ---------------------------------------------------------------------------
   redroid2:
     image: z220-farm:v1-magisk-core:latest
@@ -53,7 +59,7 @@ services:
       resources:
         limits:
           cpus: '2.0'
-          memory: 6G
+          memory: 6G # Native Pixel 6a Spec
     volumes:
       - ./data2:/data
       - /dev/binderfs:/dev/binderfs
@@ -67,16 +73,21 @@ services:
       # --- MAGISK FLAGS ---
       - ro.secure=0
       - ro.debuggable=1
-      # --- SPOOFING: Tab S9+ (SM-X816B) ---
-      - ro.product.model=SM-X816B
-      - ro.product.brand=samsung
-      - ro.product.manufacturer=samsung
-      - ro.product.device=book4
-      - ro.build.fingerprint=samsung/book4/book4:12/SP1A.210812.016/X816BXXU4BWL1:user/release-keys
+      # --- SPOOFING: Pixel 6a ---
+      - ro.product.brand=google
+      - ro.product.manufacturer=Google
+      - ro.product.model=Pixel 6a
+      - ro.product.device=bluejay
+      - ro.product.name=bluejay
+      - ro.product.board=bluejay
+      - ro.build.fingerprint=google/bluejay/bluejay:12/SD2A.220601.003/8654604:user/release-keys
+      - ro.build.description=bluejay-user 12 SD2A.220601.003 8654604 release-keys
+      - ro.build.version.security_patch=2022-06-05
+      - ro.product.first_api_level=31
       - scrcpy.max_fps=30
 
   # ---------------------------------------------------------------------------
-  # NODE 3: Tab S10 Ultra (Port 5557)
+  # NODE 3: Pixel 6a (Bluejay) - House 2 / Device A
   # ---------------------------------------------------------------------------
   redroid3:
     image: z220-farm:v1-magisk-core:latest
@@ -89,7 +100,7 @@ services:
       resources:
         limits:
           cpus: '2.0'
-          memory: 6G
+          memory: 6G # Native Pixel 6a Spec
     volumes:
       - ./data3:/data
       - /dev/binderfs:/dev/binderfs
@@ -103,23 +114,21 @@ services:
       # --- MAGISK FLAGS ---
       - ro.secure=0
       - ro.debuggable=1
-      # --- SPOOFING: Tab S10 Ultra (SM-X926B) ---
-      - ro.product.model=SM-X926B
-      - ro.product.name=gts10u
-      - ro.product.device=gts10u
-      - ro.product.brand=Samsung
-      - ro.product.manufacturer=Samsung
-      - ro.product.system.brand=Samsung
-      - ro.product.system.manufacturer=Samsung
-      - ro.product.brand_for_attestation=samsung
-      - ro.product.device_for_attestation=gts10u
-      - ro.product.manufacturer_for_attestation=Samsung
-      - ro.product.model_for_attestation=SM-X926B
-      - ro.product.name_for_attestation=Samsung Tab S10 Ultra
+      # --- SPOOFING: Pixel 6a ---
+      - ro.product.brand=google
+      - ro.product.manufacturer=Google
+      - ro.product.model=Pixel 6a
+      - ro.product.device=bluejay
+      - ro.product.name=bluejay
+      - ro.product.board=bluejay
+      - ro.build.fingerprint=google/bluejay/bluejay:12/SD2A.220601.003/8654604:user/release-keys
+      - ro.build.description=bluejay-user 12 SD2A.220601.003 8654604 release-keys
+      - ro.build.version.security_patch=2022-06-05
+      - ro.product.first_api_level=31
       - scrcpy.max_fps=30
 
   # ---------------------------------------------------------------------------
-  # NODE 4: Tab S8 Ultra (Port 5558)
+  # NODE 4: Pixel 6a (Bluejay) - House 2 / Device B
   # ---------------------------------------------------------------------------
   redroid4:
     image: z220-farm:v1-magisk-core:latest
@@ -132,7 +141,7 @@ services:
       resources:
         limits:
           cpus: '2.0'
-          memory: 6G
+          memory: 6G # Native Pixel 6a Spec
     volumes:
       - ./data4:/data
       - /dev/binderfs:/dev/binderfs
@@ -146,10 +155,15 @@ services:
       # --- MAGISK FLAGS ---
       - ro.secure=0
       - ro.debuggable=1
-      # --- SPOOFING: Tab S8 Ultra (SM-X906B) ---
-      - ro.product.model=SM-X906B
-      - ro.product.brand=samsung
-      - ro.product.manufacturer=samsung
-      - ro.product.device=book3
-      - ro.build.fingerprint=samsung/book3/book3:12/SP1A.210812.016/X906BXXU4BWL1:user/release-keys
+      # --- SPOOFING: Pixel 6a ---
+      - ro.product.brand=google
+      - ro.product.manufacturer=Google
+      - ro.product.model=Pixel 6a
+      - ro.product.device=bluejay
+      - ro.product.name=bluejay
+      - ro.product.board=bluejay
+      - ro.build.fingerprint=google/bluejay/bluejay:12/SD2A.220601.003/8654604:user/release-keys
+      - ro.build.description=bluejay-user 12 SD2A.220601.003 8654604 release-keys
+      - ro.build.version.security_patch=2022-06-05
+      - ro.product.first_api_level=31
       - scrcpy.max_fps=30
