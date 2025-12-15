@@ -1,0 +1,155 @@
+version: "3.8"
+
+services:
+  # ---------------------------------------------------------------------------
+  # NODE 1: Tab S9 Ultra (Port 5555)
+  # ---------------------------------------------------------------------------
+  redroid1:
+    image: z220-farm:v1-magisk-core:latest
+    container_name: redroid-1
+    privileged: true
+    restart: unless-stopped
+    ports:
+      - "5555:5555"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 6G
+    volumes:
+      - ./data1:/data
+      # CORRECTED: Use binderfs for Ubuntu 22.04/Kernel 5.15+
+      - /dev/binderfs:/dev/binderfs
+      # GPU Access
+      - /dev/dri:/dev/dri
+    command:
+      # --- GPU CONFIG (RX 580) ---
+      - android.hardware.gralloc=gbm
+      - ro.hardware.egl=mesa
+      - ro.hardware.vulkan=radeon
+      - androidboot.redroid_gpu_mode=host
+      # --- MAGISK FLAGS ---
+      - ro.secure=0
+      - ro.debuggable=1
+      # --- SPOOFING: Tab S9 Ultra (SM-X916B) ---
+      - ro.product.model=SM-X916B
+      - ro.product.brand=samsung
+      - ro.product.manufacturer=samsung
+      - ro.product.device=zeppelin
+      - ro.build.fingerprint=samsung/zeppelin/zeppelin:12/SP1A.210812.016/X916BXXU4BWL1:user/release-keys
+      - scrcpy.max_fps=30
+
+  # ---------------------------------------------------------------------------
+  # NODE 2: Tab S9+ (Port 5556)
+  # ---------------------------------------------------------------------------
+  redroid2:
+    image: z220-farm:v1-magisk-core:latest
+    container_name: redroid-2
+    privileged: true
+    restart: unless-stopped
+    ports:
+      - "5556:5555"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 6G
+    volumes:
+      - ./data2:/data
+      - /dev/binderfs:/dev/binderfs
+      - /dev/dri:/dev/dri
+    command:
+      # --- GPU CONFIG ---
+      - android.hardware.gralloc=gbm
+      - ro.hardware.egl=mesa
+      - ro.hardware.vulkan=radeon
+      - androidboot.redroid_gpu_mode=host
+      # --- MAGISK FLAGS ---
+      - ro.secure=0
+      - ro.debuggable=1
+      # --- SPOOFING: Tab S9+ (SM-X816B) ---
+      - ro.product.model=SM-X816B
+      - ro.product.brand=samsung
+      - ro.product.manufacturer=samsung
+      - ro.product.device=book4
+      - ro.build.fingerprint=samsung/book4/book4:12/SP1A.210812.016/X816BXXU4BWL1:user/release-keys
+      - scrcpy.max_fps=30
+
+  # ---------------------------------------------------------------------------
+  # NODE 3: Tab S10 Ultra (Port 5557)
+  # ---------------------------------------------------------------------------
+  redroid3:
+    image: z220-farm:v1-magisk-core:latest
+    container_name: redroid-3
+    privileged: true
+    restart: unless-stopped
+    ports:
+      - "5557:5555"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 6G
+    volumes:
+      - ./data3:/data
+      - /dev/binderfs:/dev/binderfs
+      - /dev/dri:/dev/dri
+    command:
+      # --- GPU CONFIG ---
+      - android.hardware.gralloc=gbm
+      - ro.hardware.egl=mesa
+      - ro.hardware.vulkan=radeon
+      - androidboot.redroid_gpu_mode=host
+      # --- MAGISK FLAGS ---
+      - ro.secure=0
+      - ro.debuggable=1
+      # --- SPOOFING: Tab S10 Ultra (SM-X926B) ---
+      - ro.product.model=SM-X926B
+      - ro.product.name=gts10u
+      - ro.product.device=gts10u
+      - ro.product.brand=Samsung
+      - ro.product.manufacturer=Samsung
+      - ro.product.system.brand=Samsung
+      - ro.product.system.manufacturer=Samsung
+      - ro.product.brand_for_attestation=samsung
+      - ro.product.device_for_attestation=gts10u
+      - ro.product.manufacturer_for_attestation=Samsung
+      - ro.product.model_for_attestation=SM-X926B
+      - ro.product.name_for_attestation=Samsung Tab S10 Ultra
+      - scrcpy.max_fps=30
+
+  # ---------------------------------------------------------------------------
+  # NODE 4: Tab S8 Ultra (Port 5558)
+  # ---------------------------------------------------------------------------
+  redroid4:
+    image: z220-farm:v1-magisk-core:latest
+    container_name: redroid-4
+    privileged: true
+    restart: unless-stopped
+    ports:
+      - "5558:5555"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 6G
+    volumes:
+      - ./data4:/data
+      - /dev/binderfs:/dev/binderfs
+      - /dev/dri:/dev/dri
+    command:
+      # --- GPU CONFIG ---
+      - android.hardware.gralloc=gbm
+      - ro.hardware.egl=mesa
+      - ro.hardware.vulkan=radeon
+      - androidboot.redroid_gpu_mode=host
+      # --- MAGISK FLAGS ---
+      - ro.secure=0
+      - ro.debuggable=1
+      # --- SPOOFING: Tab S8 Ultra (SM-X906B) ---
+      - ro.product.model=SM-X906B
+      - ro.product.brand=samsung
+      - ro.product.manufacturer=samsung
+      - ro.product.device=book3
+      - ro.build.fingerprint=samsung/book3/book3:12/SP1A.210812.016/X906BXXU4BWL1:user/release-keys
+      - scrcpy.max_fps=30
