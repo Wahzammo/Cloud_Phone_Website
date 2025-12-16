@@ -6,7 +6,7 @@ services:
   # Native 6GB RAM Device - Perfect match for host constraints
   # ---------------------------------------------------------------------------
   redroid1:
-    image: z220-farm:v1-magisk-core:latest
+    image: redroid/redroid:11.0.0_gapps_ndk_widevine
     container_name: redroid-1
     privileged: true
     restart: unless-stopped
@@ -49,7 +49,7 @@ services:
   # NODE 2: Pixel 6a (Bluejay) - House 1 / Device B
   # ---------------------------------------------------------------------------
   redroid2:
-    image: z220-farm:v1-magisk-core:latest
+    image: redroid/redroid:11.0.0_gapps_ndk_widevine
     container_name: redroid-2
     privileged: true
     restart: unless-stopped
@@ -90,7 +90,7 @@ services:
   # NODE 3: Pixel 6a (Bluejay) - House 2 / Device A
   # ---------------------------------------------------------------------------
   redroid3:
-    image: z220-farm:v1-magisk-core:latest
+    image: redroid/redroid:11.0.0_gapps_ndk_widevine
     container_name: redroid-3
     privileged: true
     restart: unless-stopped
@@ -131,7 +131,7 @@ services:
   # NODE 4: Pixel 6a (Bluejay) - House 2 / Device B
   # ---------------------------------------------------------------------------
   redroid4:
-    image: z220-farm:v1-magisk-core:latest
+    image: redroid/redroid:11.0.0_gapps_ndk_widevine
     container_name: redroid-4
     privileged: true
     restart: unless-stopped
